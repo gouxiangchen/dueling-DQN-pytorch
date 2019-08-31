@@ -1,6 +1,8 @@
 # dueling-DQN-pytorch
 very easy implementation of dueling DQN in pytorch with gym.CartPole-v0
 
+all things are in one file, easily to follow~~
+
 ## requirement 
 
 - tensorflow (for tensorboard logging)
