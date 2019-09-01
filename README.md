@@ -16,9 +16,20 @@ in CartPole-v0 the network will convergence to 200 episode reward very quickly~~
 
 ## CartPole-v0
 
+just run 
+
+```
+python ddqn.py
+```
+
 common, no description~
 
 ## Visual doom
+
+just run
+```
+python visual_doom.py
+```
 
 use the [basic](https://github.com/mwydmuch/ViZDoom/blob/master/examples/python/basic.py) environment of Visual doom. The agent could play very experienced after about 1000 times of games~~
 
