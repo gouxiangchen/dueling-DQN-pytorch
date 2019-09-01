@@ -12,7 +12,6 @@ all things are in one file, easily to follow~~
 - gym
 - [ViZDoom](https://github.com/mwydmuch/ViZDoom)
 
-in CartPole-v0 the network will convergence to 200 episode reward very quickly~~
 
 ## CartPole-v0
 
@@ -24,6 +23,7 @@ python ddqn.py
 
 common, no description~
 
+in CartPole-v0 the network will convergence to 200 episode reward very quickly~~
 ## Visual doom
 
 just run
