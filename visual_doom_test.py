@@ -10,6 +10,9 @@ import torchvision
 from itertools import count
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class QNetwork(nn.Module):
     def __init__(self):
         super(QNetwork, self).__init__()
@@ -120,8 +123,8 @@ def preprocess(image_frame):  # transform w * h * d to d * w * h
     return image_frame.numpy()
 
 
-onlineQNetwork = QNetwork().cuda()
-targetQNetwork = QNetwork().cuda()
+onlineQNetwork = QNetwork().to(device)
+targetQNetwork = QNetwork().to(device)
 targetQNetwork.load_state_dict(onlineQNetwork.state_dict())
 
 optimizer = torch.optim.Adam(onlineQNetwork.parameters(), lr=1e-5)
@@ -249,7 +252,7 @@ for epoch in count():
         if p < epsilon:
             action = random.randint(0, 2)
         else:
-            tensor_frame = torch.FloatTensor(frame).unsqueeze(0).cuda()
+            tensor_frame = torch.FloatTensor(frame).unsqueeze(0).to(device)
             action = onlineQNetwork.select_action(tensor_frame)
 
         reward = env.make_action(actions[action])

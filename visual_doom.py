@@ -14,6 +14,9 @@ from PIL import Image
 import torchvision
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class QNetwork(nn.Module):
     def __init__(self):
         super(QNetwork, self).__init__()
@@ -125,8 +128,8 @@ def preprocess(image_frame):  # transform w * h * d to d * w * h
     return image_frame.numpy()
 
 
-onlineQNetwork = QNetwork().cuda()
-targetQNetwork = QNetwork().cuda()
+onlineQNetwork = QNetwork().to(device)
+targetQNetwork = QNetwork().to(device)
 targetQNetwork.load_state_dict(onlineQNetwork.state_dict())
 
 optimizer = torch.optim.Adam(onlineQNetwork.parameters(), lr=1e-5)
@@ -255,7 +258,7 @@ for epoch in range(50000):
         if p < epsilon:
             action = random.randint(0, 2)
         else:
-            tensor_frame = torch.FloatTensor(frame).unsqueeze(0).cuda()
+            tensor_frame = torch.FloatTensor(frame).unsqueeze(0).to(device)
             action = onlineQNetwork.select_action(tensor_frame)
 
         reward = env.make_action(actions[action])
@@ -283,11 +286,11 @@ for epoch in range(50000):
             batch = memory_replay.sample(BATCH, False)
             batch_state, batch_next_state, batch_action, batch_reward, batch_done = zip(*batch)
             # print(np.asarray(batch_state).shape)
-            batch_state = torch.FloatTensor(batch_state).cuda()
-            batch_next_state = torch.FloatTensor(batch_next_state).cuda()
-            batch_action = torch.FloatTensor(batch_action).unsqueeze(1).cuda()
-            batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).cuda()
-            batch_done = torch.FloatTensor(batch_done).unsqueeze(1).cuda()
+            batch_state = torch.FloatTensor(batch_state).to(device)
+            batch_next_state = torch.FloatTensor(batch_next_state).to(device)
+            batch_action = torch.FloatTensor(batch_action).unsqueeze(1).to(device)
+            batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).to(device)
+            batch_done = torch.FloatTensor(batch_done).unsqueeze(1).to(device)
 
             with torch.no_grad():
                 onlineQ_next = onlineQNetwork(batch_next_state)
