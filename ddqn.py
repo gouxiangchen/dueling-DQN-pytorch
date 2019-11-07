@@ -92,22 +92,17 @@ memory_replay = Memory(REPLAY_MEMORY)
 
 epsilon = INITIAL_EPSILON
 learn_steps = 0
-writer = SummaryWriter('ddqn_logs')
+writer = SummaryWriter('logs/ddqn')
 begin_learn = False
 
 episode_reward = 0
-previous_episode_reward = episode_reward
 
-onlineQNetwork.load_state_dict(torch.load('ddqn-policy.para'))
+# onlineQNetwork.load_state_dict(torch.load('ddqn-policy.para'))
 for epoch in count():
 
     state = env.reset()
-    previous_episode_reward = episode_reward
     episode_reward = 0
-    for time_steps in range(2000):
-        # env.render()
-        # if previous_episode_reward > 150:
-        #     env.render()
+    for time_steps in range(200):
         p = random.random()
         if p < epsilon:
             action = random.randint(0, 1)
