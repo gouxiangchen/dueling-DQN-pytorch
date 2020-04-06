@@ -1,6 +1,8 @@
 # dueling-DQN-pytorch
 very easy implementation of dueling DQN in pytorch
 
+(update implementation in tensorflow v1)
+
 all things are in one file, easily to follow~~
 
 ![Architecture](./dueling-DQN.png)
