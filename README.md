@@ -1,7 +1,7 @@
 # dueling-DQN-pytorch
 very easy implementation of dueling DQN in pytorch
 
-(update implementation in tensorflow v1)
+**(update implementation in tensorflow v1(tf1) & v2(tf2))**
 
 all things are in one file, easily to follow~~
 
