@@ -3,11 +3,11 @@ very easy implementation of dueling DQN in pytorch
 
 **(update implementation in tensorflow v1(tf1) & v2(tf2))**
 
-all things are in one file, easily to follow~~
+all things are in one file, easy to follow~~
 
 ![Architecture](./dueling-DQN.png)
 
-## requirement 
+## requirements 
 
 - tensorflow (for tensorboard logging)
 - pytorch (>=1.0, 1.0.1 used in my experiment)
@@ -20,7 +20,7 @@ all things are in one file, easily to follow~~
 for training ddqn in CartPole, just run 
 
 ```
-python ddqn.py
+python dueling_dqn.py
 ```
 
 common, no description~
