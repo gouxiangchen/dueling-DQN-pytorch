@@ -8,6 +8,7 @@ from itertools import count
 import torch.nn.functional as F
 from tensorboardX import SummaryWriter
 from model import QNetwork
+import wandb
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -67,6 +68,27 @@ begin_learn = False
 
 episode_reward = 0
 
+
+run = wandb.init(project="Dueling DQN", entity="evolvingnn")
+
+wandb.config = {
+    "Gamma": GAMMA,
+    "Explore": EXPLORE,
+    "Initial Epsilon": INITIAL_EPSILON,
+    "Final Epsilon": FINwandb.run.log_code(".")AL_EPSILON,
+    "Replay Memory": REPLAY_MEMORY,
+    "Batch": BATCH,
+    "Update Steps": UPDATE_STEPS
+}
+
+wandb.watch(onlineQNetwork)
+
+# Save code to wandb
+wandb.run.log_code(".")
+
+
+
+
 # onlineQNetwork.load_state_dict(torch.load('ddqn-policy.para'))
 for epoch in count():
 
@@ -118,10 +140,13 @@ for epoch in count():
         state = next_state
 
     writer.add_scalar('episode reward', episode_reward, global_step=epoch)
-    if epoch % 10 == 0:
-        torch.save(onlineQNetwork.state_dict(), 'ddqn-policy.para')
+    if epoch % 100 == 0 and epoch != 0:
+        torch.save(onlineQNetwork.state_dict(), 'ddqn-policy.pth')
+        model_artifact = wandb.Artifact('ddqn', type='model')
+        model_artifact.add_file('ddqn-policy.pth')
+        wandb.log_artifact(model_artifact)
         print('Ep {}\tMoving average score: {:.2f}\t'.format(epoch, episode_reward))
-
+        wandb.log({"Episode Reward": episode_reward})
 
 
 
