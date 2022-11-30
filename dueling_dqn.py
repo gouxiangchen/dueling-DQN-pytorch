@@ -27,8 +27,7 @@ class Memory(object):
         return len(self.buffer)
 
     def sample(self, batch_size: int, continuous: bool = True):
-        if batch_size > len(self.buffer):
-            batch_size = len(self.buffer)
+        batch_size = min(batch_size, len(self.buffer))
         if continuous:
             rand = random.randint(0, len(self.buffer) - batch_size)
             return [self.buffer[i] for i in range(rand, rand + batch_size)]
@@ -75,7 +74,7 @@ wandb.config = {
     "Gamma": GAMMA,
     "Explore": EXPLORE,
     "Initial Epsilon": INITIAL_EPSILON,
-    "Final Epsilon": FINwandb.run.log_code(".")AL_EPSILON,
+    "Final Epsilon": FINAL_EPSILON,
     "Replay Memory": REPLAY_MEMORY,
     "Batch": BATCH,
     "Update Steps": UPDATE_STEPS
@@ -94,7 +93,7 @@ for epoch in count():
 
     state = env.reset()
     episode_reward = 0
-    for time_steps in range(200):
+    for _ in range(200):
         p = random.random()
         if p < epsilon:
             action = random.randint(0, 1)
