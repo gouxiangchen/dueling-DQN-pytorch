@@ -30,7 +30,7 @@ class QNetwork(nn.Module):
 
     def select_action(self, state):
         with torch.no_grad():
-            Q = self.forward(state)
+            Q = self(state)
             action_index = torch.argmax(Q, dim=1)
         return action_index.item()
 
